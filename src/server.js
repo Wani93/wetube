@@ -1,4 +1,5 @@
 import './db'; // db.js 파일을 import 하기 때문에 db.js 코드가 자동적으로 실행 됨.
+import './models/Video';
 import express from 'express';
 import morgan from 'morgan';
 import globalRouter from './routers/globalRouter';
