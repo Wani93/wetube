@@ -6,6 +6,6 @@ const globalRouter = express.Router();
 
 globalRouter.get('/', home);
 globalRouter.get('/join', join);
-globalRouter.get('login', login);
+globalRouter.get('/login', login);
 
 export default globalRouter;
