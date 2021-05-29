@@ -1,6 +1,6 @@
 import express from 'express';
 import morgan from 'morgan';
-import globalRouter from './routers/globalRouter';
+import rootRouter from './routers/rootRouter';
 import userRouter from './routers/userRouter';
 import videoRouter from './routers/videoRouter';
 
@@ -12,7 +12,7 @@ app.set('views', `${process.cwd()}/src/views`); // process.cwd()는 현재 작�
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true })); // Form 형식을 이해할 수 있도록 변형 시켜 줌.
 
-app.use('/', globalRouter);
+app.use('/', rootRouter);
 app.use('/users', userRouter);
 app.use('/videos', videoRouter);
 

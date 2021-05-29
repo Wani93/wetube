@@ -1,5 +1,6 @@
 import './db'; // db.js 파일을 import 하기 때문에 db.js 코드가 자동적으로 실행 됨.
 import './models/Video';
+import './models/User';
 import app from './server';
 
 const PORT = 4000;
