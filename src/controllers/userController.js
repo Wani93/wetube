@@ -42,7 +42,7 @@ export const getLogin = (req, res) =>
 export const postLogin = async (req, res) => {
   const pageTitle = 'Login';
   const { username, password } = req.body;
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ username, socialOnly: false });
 
   // username 체크
   if (!user) {
@@ -118,13 +118,10 @@ export const finishGithubLogin = async (req, res) => {
     if (!emailObj) {
       return res.redirect('/login');
     }
-    const existingUser = await User.findOne({ email: emailObj.email });
-    if (existingUser) {
-      req.session.loggedIn = true;
-      req.session.user = existingUser;
-      return res.redirect('/');
-    } else {
-      const user = await User.create({
+    let user = await User.findOne({ email: emailObj.email });
+    if (!user) {
+      user = await User.create({
+        avartarUrl: userData.avartar_url,
         name: userData.name,
         username: userData.login,
         email: emailObj.email,
@@ -132,14 +129,17 @@ export const finishGithubLogin = async (req, res) => {
         socialOnly: true,
         location: userData.location,
       });
-      req.session.loggedIn = true;
-      req.session.user = user;
-      return res.redirect('/');
     }
+    req.session.loggedIn = true;
+    req.session.user = user;
+    return res.redirect('/');
   } else {
     return res.redirect('/login');
   }
 };
 
-export const logout = (req, res) => res.send('Log out');
+export const logout = (req, res) => {
+  req.session.destroy();
+  return res.redirect('/');
+};
 export const see = (req, res) => res.send('See');
