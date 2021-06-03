@@ -38,8 +38,42 @@ export const postJoin = async (req, res) => {
 export const getEdit = (req, res) => {
   return res.render('edit-profile', { pageTitle: 'Edit Profile' });
 };
-export const postEdit = (req, res) => {
-  return res.render('edit-profile');
+export const postEdit = async (req, res) => {
+  const {
+    session: {
+      user: { _id, email: sessionEmail, username: sessionUsername },
+    },
+    body: { name, email, username, location },
+  } = req;
+
+  const existParam = [];
+
+  // 세션에 등록된 유저네임과 변경할 유저네임 비교
+  if (username !== sessionUsername) {
+    existParam.push({ username });
+  }
+  // 세션에 등록된 이메일과 변경할 이메일 비교
+  if (email !== sessionEmail) {
+    existParam.push({ email });
+  }
+
+  // 변경할 부분이 있다면
+  if (existParam.length > 0) {
+    const foundUser = await User.exists({ $or: existParam }); // 변경할 값을 가진 유저가 존재하는지 확인
+    if (foundUser && foundUser._id.toString() !== _id) {
+      // 변경할 유저가 존재하고 로그인한 아이디값이 서로 다르면 error
+      console.log('error');
+      return res.status(400).redirect('/');
+    }
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(
+    _id,
+    { name, email, username, location },
+    { new: true },
+  );
+  req.session.user = updatedUser;
+  return res.redirect('edit-profile');
 };
 export const remove = (req, res) => res.send('Remove User');
 export const getLogin = (req, res) =>
