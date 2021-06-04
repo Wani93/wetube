@@ -41,9 +41,10 @@ export const getEdit = (req, res) => {
 export const postEdit = async (req, res) => {
   const {
     session: {
-      user: { _id, email: sessionEmail, username: sessionUsername },
+      user: { _id, avatarUrl, email: sessionEmail, username: sessionUsername },
     },
     body: { name, email, username, location },
+    file,
   } = req;
 
   const existParam = [];
@@ -69,10 +70,17 @@ export const postEdit = async (req, res) => {
 
   const updatedUser = await User.findByIdAndUpdate(
     _id,
-    { name, email, username, location },
+    {
+      avatarUrl: file ? file.path : avatarUrl,
+      name,
+      email,
+      username,
+      location,
+    },
     { new: true },
   );
   req.session.user = updatedUser;
+  console.log('user: ', req.session.user);
   return res.redirect('edit-profile');
 };
 export const remove = (req, res) => res.send('Remove User');
@@ -160,7 +168,7 @@ export const finishGithubLogin = async (req, res) => {
     let user = await User.findOne({ email: emailObj.email });
     if (!user) {
       user = await User.create({
-        avartarUrl: userData.avartar_url,
+        avatarUrl: userData.avatar_url,
         name: userData.name,
         username: userData.login,
         email: emailObj.email,
