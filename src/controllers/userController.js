@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import fetch from 'node-fetch';
 import User from '../models/User';
+import Video from '../models/Video';
 
 export const getJoin = (req, res) => res.render('Join', { pageTitle: 'Join' });
 export const postJoin = async (req, res) => {
@@ -80,7 +81,7 @@ export const postEdit = async (req, res) => {
     { new: true },
   );
   req.session.user = updatedUser;
-  console.log('user: ', req.session.user);
+
   return res.redirect('edit-profile');
 };
 export const remove = (req, res) => res.send('Remove User');
@@ -226,8 +227,12 @@ export const see = async (req, res) => {
   if (!user) {
     return res.status(404).render('404', { pageTitle: 'User not found.' });
   }
+
+  const videos = await Video.find({ owner: user._id });
+
   return res.render('users/profile', {
     pageTitle: user.name,
     user,
+    videos,
   });
 };
