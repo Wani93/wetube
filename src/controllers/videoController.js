@@ -1,4 +1,5 @@
 import Video from '../models/Video';
+import User from '../models/User';
 
 export const home = async (req, res) => {
   const videos = await Video.find({}).sort({ createdAt: 'desc' });
@@ -48,14 +49,16 @@ export const postUpload = async (req, res) => {
   const { title, description, hashtags } = req.body;
   try {
     // Video Document 생성
-    await Video.create({
+    const newVideo = await Video.create({
       title,
       description,
       fileUrl,
       owner: _id,
       hashtags: Video.formatHashtags(hashtags),
     });
-
+    const user = await User.findById(_id);
+    user.videos.push(newVideo._id);
+    user.save();
     return res.redirect('/');
   } catch (error) {
     console.log(error);
