@@ -26,6 +26,7 @@ app.use(
 
 app.use(localsMiddleware);
 app.use('/uploads', express.static('uploads')); // 클라이언트에서 /uploads 경로로 갔을때 uploads 폴더를 보여주도록 허용
+app.use('/static', express.static('assets'));
 
 app.use('/', rootRouter);
 app.use('/users', userRouter);
