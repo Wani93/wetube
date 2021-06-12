@@ -2,13 +2,14 @@ import Video from '../models/Video';
 import User from '../models/User';
 
 export const home = async (req, res) => {
-  const videos = await Video.find({}).sort({ createdAt: 'desc' });
+  const videos = await Video.find({})
+    .sort({ createdAt: 'desc' })
+    .populate('owner');
   return res.render('home', { pageTitle: 'Home', videos });
 };
 export const watch = async (req, res) => {
   const { id } = req.params;
   const video = await Video.findById(id).populate('owner'); // ref한 User 모델 객체정보가 owner에 담김
-
   if (!video) {
     return res.status(404).render('404', { pageTitle: 'Video not found.' });
   }
@@ -105,7 +106,7 @@ export const search = async (req, res) => {
       title: {
         $regex: new RegExp(`${keyword}`, 'gi'),
       },
-    });
+    }).populate('owner');
   }
   return res.render('search', { pageTitle: 'Search', videos });
 };
