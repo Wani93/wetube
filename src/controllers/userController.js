@@ -223,10 +223,10 @@ export const postChangePassword = async (req, res) => {
 export const see = async (req, res) => {
   const { id } = req.params;
   const user = await User.findById(id).populate({
-    path: 'videos',
+    path: 'videos', // videos 부터 populate 함.
     populate: {
       path: 'owner',
-      model: 'User',
+      model: 'User', // 그다음 User 모델을 populate 함. -> double populate 라고 불림.
     },
   });
   if (!user) {
