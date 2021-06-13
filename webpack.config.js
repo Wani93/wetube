@@ -2,7 +2,11 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
 module.exports = {
-  entry: './src/client/js/main.js', // 웹팩에 적용할 파일 (엔트리 포인트)
+  entry: {
+    // 웹팩에 적용할 파일 (엔트리 포인트)
+    main: './src/client/js/main.js',
+    videoPlayer: './src/client/js/videoPlayer.js',
+  },
   mode: 'development', // development: 개발 모드(패키징 시 좀 더 보기 좋은 코드로 변환) production: 완성 모드(압축한 코드로 변환)
   watch: true,
   plugins: [
@@ -11,7 +15,7 @@ module.exports = {
     }),
   ],
   output: {
-    filename: 'js/main.js',
+    filename: 'js/[name].js', // 파일 이름을 [name]으로 하면 변수화 하여 각각의 파일이 생김.
     path: path.resolve(__dirname, 'assets'),
     clean: true,
   },
