@@ -22,7 +22,10 @@ video.volume = volumeValue;
 const formatTime = (seconds) =>
   new Date(Math.floor(seconds) * 1000).toISOString().substr(14, 5);
 
-const handlePlayClick = () => {
+const handlePlayClick = (event) => {
+  if (event.type === 'keydown' && event.key !== ' ') {
+    return;
+  }
   if (video.paused) {
     video.play();
   } else {

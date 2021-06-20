@@ -16,7 +16,7 @@ app.set('views', `${process.cwd()}/src/views`); // process.cwd()는 현재 작�
 
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true })); // Form 형식을 이해할 수 있도록 변형 시켜 줌.
-
+app.use(express.json()); // 서버에서 string으로 받은 데이터를 json으로 변환해주는 미들웨어
 app.use(
   session({
     secret: process.env.COOKIE_SECRET,

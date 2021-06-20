@@ -1,11 +1,14 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
+const BASE_JS = './src/client/js';
+
 module.exports = {
   entry: {
     // 웹팩에 적용할 파일 (엔트리 포인트)
-    main: './src/client/js/main.js',
-    videoPlayer: './src/client/js/videoPlayer.js',
+    main: `${BASE_JS}/main.js`,
+    videoPlayer: `${BASE_JS}/videoPlayer.js`,
+    commentSection: `${BASE_JS}/commentSection.js`,
   },
   mode: 'development', // development: 개발 모드(패키징 시 좀 더 보기 좋은 코드로 변환) production: 완성 모드(압축한 코드로 변환)
   watch: true,
@@ -26,7 +29,7 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: [['@babel/preset-env', { targets: 'defaults' }]],
+            presets: [['@babel/preset-env', { targets: { chrome: '58' } }]],
           },
         },
       },
