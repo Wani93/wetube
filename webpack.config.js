@@ -11,7 +11,6 @@ module.exports = {
     commentSection: `${BASE_JS}/commentSection.js`,
   },
   mode: 'development', // development: 개발 모드(패키징 시 좀 더 보기 좋은 코드로 변환) production: 완성 모드(압축한 코드로 변환)
-  watch: true,
   plugins: [
     new MiniCssExtractPlugin({
       filename: 'css/styles.css',
