@@ -1,5 +1,9 @@
 extends base
 
+block scripts
+  script(defer src="/static/js/videoPlayer.js")
+  script(defer src="/static/js/commentSection.js")
+
 block content
   div#videoContainer(data-id=video._id)
     video(src=video.fileUrl)
@@ -40,6 +44,3 @@ block content
           span  #{comment.text}
           if loggedIn && String(comment.owner) === String(loggedInUser._id)
             span ❌
-block scripts
-  script(src="/static/js/videoPlayer.js")
-  script(src="/static/js/commentSection.js")
