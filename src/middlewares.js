@@ -1,5 +1,5 @@
 import multer from 'multer';
-import multerS3 from 'multer-s3r';
+import multerS3 from 'multer-s3';
 import aws from 'aws-sdk';
 
 const s3 = new aws.S3({
@@ -9,9 +9,15 @@ const s3 = new aws.S3({
   },
 });
 
-const multerUploader = multerS3({
+const s3ImageUploader = multerS3({
   s3,
-  bucket: 'wetube-wani',
+  bucket: 'wetube-wani/images',
+  acl: 'public-read',
+});
+
+const s3VideoUploader = multerS3({
+  s3,
+  bucket: 'wetube-wani/videos',
   acl: 'public-read',
 });
 
@@ -47,7 +53,7 @@ export const uploadAvatar = multer({
   limit: {
     fileSize: 3000000,
   },
-  storage: multerUploader,
+  storage: s3ImageUploader,
 });
 
 export const uploadVideo = multer({
@@ -55,5 +61,5 @@ export const uploadVideo = multer({
   limit: {
     fileSize: 10000000,
   },
-  storage: multerUploader,
+  storage: s3VideoUploader,
 });
