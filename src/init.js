@@ -10,4 +10,4 @@ const PORT = process.env.PORT || 4000; // process.env.PORT: heroku에서 제공�
 const handleListening = () =>
   console.log(`Server Listening on port http://localhost:${PORT}`);
 
-app.listen(4000, handleListening);
+app.listen(PORT, handleListening);
